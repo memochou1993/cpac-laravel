@@ -1,5 +1,5 @@
 type Query {
-    user(
+    userFind(
         id: ID @eq @rules(
             apply: [
                 "required",
@@ -13,7 +13,7 @@ type Query {
 }
 
 type Mutation {
-    createUser(
+    userCreate(
         name: String @rules(
             apply: [
                 "required",
@@ -33,7 +33,7 @@ type Mutation {
         ) @bcrypt
     ): User @create
 
-    updateUser(
+    userUpdate(
         id: ID! @rules(
             apply: [
                 "required",
@@ -47,7 +47,7 @@ type Mutation {
         )
     ): User @update
 
-    deleteUser(
+    userDelete(
         id: ID! @rules(
             apply: [
                 "required",
