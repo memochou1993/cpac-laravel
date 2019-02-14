@@ -12,27 +12,21 @@ class UserQueryTest extends TestCase
     use RefreshDatabase;
 
     private $id;
-
     private $name;
-
     private $email;
-    
     private $password;
 
     protected function setUp()
     {
         parent::setUp();
 
-        $this->id = 1;
-        $this->name = config('default.tests.user.name');
-        $this->email = config('default.tests.user.email');
-        $this->password = config('default.tests.user.password');
+        $fields = config("default.tests.user");
 
-        User::create([
-            'name' => $this->name,
-            'email' => $this->email,
-            'password' => $this->password,
-        ]);
+        foreach ($fields as $key => $value) {
+            $this->$key = $value;
+        }
+
+        User::create($fields);
     }
 
     public function testUserFind()
@@ -83,11 +77,13 @@ class UserQueryTest extends TestCase
 
     public function testUserStore()
     {
+        $flag = __FUNCTION__;
+
         $response = $this->mutate('
             userStore(
-                name: "stored'.$this->name.'"
-                email: "stored'.$this->email.'"
-                password: "stored'.$this->password.'"
+                name: "'.$flag.$this->name.'"
+                email: "'.$flag.$this->email.'"
+                password: "'.$flag.$this->password.'"
             ) {
                 name
                 email
@@ -99,8 +95,8 @@ class UserQueryTest extends TestCase
         $response->assertJson([
             'data' => [
                 'userStore' => [
-                    'name' => 'stored'.$this->name,
-                    'email' => 'stored'.$this->email,
+                    'name' => $flag.$this->name,
+                    'email' => $flag.$this->email,
                 ],
             ],
         ]);
@@ -110,12 +106,14 @@ class UserQueryTest extends TestCase
 
     public function testUserUpdate()
     {
+        $flag = __FUNCTION__;
+
         $response = $this->mutate('
             userUpdate(
                 id: '.$this->id.'
-                name: "updated'.$this->name.'"
-                email: "updated'.$this->email.'"
-                password: "updated'.$this->password.'"
+                name: "'.$flag.$this->name.'"
+                email: "'.$flag.$this->email.'"
+                password: "'.$flag.$this->password.'"
             ) {
                 name
                 email
@@ -127,8 +125,8 @@ class UserQueryTest extends TestCase
         $response->assertJson([
             'data' => [
                 'userUpdate' => [
-                    'name' => 'updated'.$this->name,
-                    'email' => 'updated'.$this->email,
+                    'name' => $flag.$this->name,
+                    'email' => $flag.$this->email,
                 ],
             ],
         ]);
