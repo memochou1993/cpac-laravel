@@ -13,7 +13,7 @@ type Query {
 }
 
 type Mutation {
-    userCreate(
+    userStore(
         name: String @rules(
             apply: [
                 "required",
@@ -45,9 +45,10 @@ type Mutation {
                 "email",
             ]
         )
+        password: String
     ): User @update
 
-    userDelete(
+    userDestroy(
         id: ID! @rules(
             apply: [
                 "required",
