@@ -1,0 +1,66 @@
+type Book {
+  id: ID!
+  title: String!
+  creator: String!
+  description: String!
+  contributor: String!
+  date: Int!
+  language: String!
+  created_at: DateTime!
+  updated_at: DateTime!
+}
+
+extend type Query {
+  fetchBooks(
+    pagination: Int @eq
+  ): [Book] @field(resolver: "BookQuery@fetchBooks")
+
+  fetchBook(
+    id: ID @eq @rules(
+      apply: [
+        "required",
+      ]
+    )
+  ): Book @find
+}
+
+extend type Mutation {
+  storeBook(
+    title: String @rules(
+      apply: [
+        "required",
+      ]
+    )
+    creator: String
+    description: String
+    contributor: String
+    date: Int
+    language: String
+  ): Book @create
+
+  updateBook(
+    id: ID! @rules(
+      apply: [
+        "required",
+      ]
+    )
+    title: String @rules(
+      apply: [
+        "required",
+      ]
+    )
+    creator: String
+    description: String
+    contributor: String
+    date: Int
+    language: String
+  ): Book @update
+
+  destroyBook(
+    id: ID! @rules(
+      apply: [
+        "required",
+      ]
+    )
+  ): Book @delete
+}

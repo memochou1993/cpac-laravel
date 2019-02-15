@@ -2,11 +2,11 @@
 
 namespace App\Http\GraphQL\Queries;
 
-use App\User;
+use App\Book;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 
-class UserQuery
+class BookQuery
 {
     /**
      * Return a value for the field.
@@ -17,8 +17,8 @@ class UserQuery
      * @param  \GraphQL\Type\Definition\ResolveInfo  $resolveInfo
      * @return mixed
      */
-    public function fetchUsers($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
+    public function fetchBooks($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {
-        return User::paginate($args['pagination'] ?? config('default.pagination'));
+        return Book::paginate($args['pagination'] ?? config('default.pagination'));
     }
 }
