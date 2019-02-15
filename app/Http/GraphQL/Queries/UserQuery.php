@@ -17,7 +17,7 @@ class UserQuery
      * @param  ResolveInfo  $resolveInfo
      * @return mixed
      */
-    public function resolve($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
+    public function fetchUsers($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {
         return User::paginate($args['pagination'] ?? config('default.pagination'));
     }

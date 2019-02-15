@@ -1,66 +1,66 @@
-type Query {
-    userFind(
-        id: ID @eq @rules(
-            apply: [
-                "required",
-            ]
-        )
-    ): User @find
+extend type Query {
+  fetchUsers(
+    pagination: Int @eq
+  ): [User] @field(resolver: "UserQuery@fetchUsers")
 
-    userQuery(
-        pagination: Int @eq
-    ): [User]
+  fetchUser(
+    id: ID @eq @rules(
+      apply: [
+        "required",
+      ]
+    )
+  ): User @find
 }
 
 type Mutation {
-    userStore(
-        name: String @rules(
-            apply: [
-                "required",
-            ]
-        )
-        email: String @rules(
-            apply: [
-                "required",
-                "email",
-                "unique:users,email",
-            ]
-        )
-        password: String @rules(
-            apply: [
-                "required",
-            ]
-        ) @bcrypt
-    ): User @create
+  storeUser(
+    name: String @rules(
+      apply: [
+        "required",
+      ]
+    )
+    email: String @rules(
+      apply: [
+        "required",
+        "email",
+        "unique:users,email",
+      ]
+    )
+    password: String @rules(
+      apply: [
+        "required",
+      ]
+    ) @bcrypt
+  ): User @create
 
-    userUpdate(
-        id: ID! @rules(
-            apply: [
-                "required",
-            ]
-        )
-        name: String
-        email: String @rules(
-            apply: [
-                "email",
-            ]
-        )
-        password: String
-    ): User @update
+  updateUser(
+    id: ID! @rules(
+      apply: [
+        "required",
+      ]
+    )
+    name: String
+    email: String @rules(
+      apply: [
+        "email",
+      ]
+    )
+    password: String
+  ): User @update
 
-    userDestroy(
-        id: ID! @rules(
-            apply: [
-                "required",
-            ]
-        )
-    ): User @delete
+  destroyUser(
+    id: ID! @rules(
+      apply: [
+        "required",
+      ]
+    )
+  ): User @delete
 }
 
 type User {
-    id: ID!
-    name: String!
-    email: String!
-    created_at: DateTime!
-    updated_at: DateTime!
+  id: ID!
+  name: String!
+  email: String!
+  created_at: DateTime!
+  updated_at: DateTime!
 }

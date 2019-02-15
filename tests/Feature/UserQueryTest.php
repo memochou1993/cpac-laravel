@@ -29,10 +29,33 @@ class UserQueryTest extends TestCase
         User::create($fields);
     }
 
-    public function testUserFind()
+    public function testFetchUsers()
     {
         $response = $this->query('
-            userFind(
+            fetchUsers {
+                name
+                email
+            }
+        ');
+
+        $response->assertStatus(200);
+
+        $response->assertJson([
+            'data' => [
+                'fetchUsers' => [
+                    [
+                        'name' => $this->name,
+                        'email' => $this->email,
+                    ],
+                ],
+            ],
+        ]);
+    }
+
+    public function testFetchUser()
+    {
+        $response = $this->query('
+            fetchUser(
                 id: '.$this->id.'
             ) {
                 name
@@ -44,7 +67,7 @@ class UserQueryTest extends TestCase
 
         $response->assertJson([
             'data' => [
-                'userFind' => [
+                'fetchUser' => [
                     'name' => $this->name,
                     'email' => $this->email,
                 ],
@@ -52,35 +75,12 @@ class UserQueryTest extends TestCase
         ]);
     }
 
-    public function testUserQuery()
-    {
-        $response = $this->query('
-            userFind(
-                id: '.$this->id.'
-            ) {
-                name
-                email
-            }
-        ');
-
-        $response->assertStatus(200);
-
-        $response->assertJson([
-            'data' => [
-                'userFind' => [
-                    'name' => $this->name,
-                    'email' => $this->email,
-                ],
-            ],
-        ]);
-    }
-
-    public function testUserStore()
+    public function testStoreUser()
     {
         $flag = __FUNCTION__;
 
         $response = $this->mutate('
-            userStore(
+            storeUser(
                 name: "'.$flag.$this->name.'"
                 email: "'.$flag.$this->email.'"
                 password: "'.$flag.$this->password.'"
@@ -94,7 +94,7 @@ class UserQueryTest extends TestCase
 
         $response->assertJson([
             'data' => [
-                'userStore' => [
+                'storeUser' => [
                     'name' => $flag.$this->name,
                     'email' => $flag.$this->email,
                 ],
@@ -104,12 +104,12 @@ class UserQueryTest extends TestCase
         $this->assertEquals(2, User::count());
     }
 
-    public function testUserUpdate()
+    public function testUpdateUser()
     {
         $flag = __FUNCTION__;
 
         $response = $this->mutate('
-            userUpdate(
+            updateUser(
                 id: '.$this->id.'
                 name: "'.$flag.$this->name.'"
                 email: "'.$flag.$this->email.'"
@@ -124,7 +124,7 @@ class UserQueryTest extends TestCase
 
         $response->assertJson([
             'data' => [
-                'userUpdate' => [
+                'updateUser' => [
                     'name' => $flag.$this->name,
                     'email' => $flag.$this->email,
                 ],
@@ -134,10 +134,10 @@ class UserQueryTest extends TestCase
         $this->assertEquals(1, User::count());
     }
 
-    public function testUserDestroy()
+    public function testDestroyUser()
     {
         $response = $this->mutate('
-            userDestroy(
+            destroyUser(
                 id: '.$this->id.'
             ) {
                 name
@@ -149,7 +149,7 @@ class UserQueryTest extends TestCase
 
         $response->assertJson([
             'data' => [
-                'userDestroy' => [
+                'destroyUser' => [
                     'name' => $this->name,
                     'email' => $this->email,
                 ],
