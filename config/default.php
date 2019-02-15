@@ -18,7 +18,7 @@ return [
             'creator' => 'creator',
             'description' => 'description',
             'contributor' => 'contributor',
-            'date' => 'date',
+            'date' => 2019,
             'language' => 'language',
         ],
     ],

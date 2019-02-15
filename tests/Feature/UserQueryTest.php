@@ -11,10 +11,10 @@ class UserQueryTest extends TestCase
 {
     use RefreshDatabase;
 
-    private $id;
-    private $name;
-    private $email;
-    private $password;
+    protected $id;
+    protected $name;
+    protected $email;
+    protected $password;
 
     protected function setUp()
     {
@@ -77,13 +77,11 @@ class UserQueryTest extends TestCase
 
     public function testStoreUser()
     {
-        $flag = __FUNCTION__;
-
         $response = $this->mutate('
             storeUser(
-                name: "'.$flag.$this->name.'"
-                email: "'.$flag.$this->email.'"
-                password: "'.$flag.$this->password.'"
+                name: "stored-'.$this->name.'"
+                email: "stored-'.$this->email.'"
+                password: "stored-'.$this->password.'"
             ) {
                 name
                 email
@@ -95,8 +93,8 @@ class UserQueryTest extends TestCase
         $response->assertJson([
             'data' => [
                 'storeUser' => [
-                    'name' => $flag.$this->name,
-                    'email' => $flag.$this->email,
+                    'name' => 'stored-'.$this->name,
+                    'email' => 'stored-'.$this->email,
                 ],
             ],
         ]);
@@ -106,14 +104,12 @@ class UserQueryTest extends TestCase
 
     public function testUpdateUser()
     {
-        $flag = __FUNCTION__;
-
         $response = $this->mutate('
             updateUser(
                 id: '.$this->id.'
-                name: "'.$flag.$this->name.'"
-                email: "'.$flag.$this->email.'"
-                password: "'.$flag.$this->password.'"
+                name: "updated-'.$this->name.'"
+                email: "updated-'.$this->email.'"
+                password: "updated-'.$this->password.'"
             ) {
                 name
                 email
@@ -125,8 +121,8 @@ class UserQueryTest extends TestCase
         $response->assertJson([
             'data' => [
                 'updateUser' => [
-                    'name' => $flag.$this->name,
-                    'email' => $flag.$this->email,
+                    'name' => 'updated-'.$this->name,
+                    'email' => 'updated-'.$this->email,
                 ],
             ],
         ]);
